@@ -1,7 +1,7 @@
 # radarr-tak
 
 ## Snap Description
-Canonical Snap for Radarr Release 5.9.1.9070+
+Canonical Snap for Radarr Release 5.9.1.9070+\
 https://snapcraft.io/radarr-tak
 
 ## Radarr Description
