@@ -1,7 +1,7 @@
 # radarr-tak
 
 ## Snap Description
-Canonical Snap for Radarr Release 5.9.1.9070+\
+Canonical Snap for Radarr Release 5+\
 https://snapcraft.io/radarr-tak
 
 ## Radarr Description
@@ -20,7 +20,7 @@ See https://radarr.video for more details.
 
 The web interface is accessible by default at http://localhost:7878
 
-Radarr Release 5.9.1.9070+\
+Radarr Release 5+\
 Core20 is still required for Radarr dependencies\
 Service is restarted on any condition.
 
