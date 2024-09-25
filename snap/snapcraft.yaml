@@ -31,10 +31,7 @@ grade: stable
 confinement: strict
 base: core20
 adopt-info: radarr
-architectures:
-  - amd64
-  - arm64
-  - armhf
+architectures: [amd64, arm64, armhf]
 
 apps:
   radarr:
