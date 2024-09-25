@@ -32,9 +32,9 @@ confinement: strict
 base: core20
 adopt-info: radarr
 architectures:
-  - build-on: amd64
-  - build-on: arm64
-  - build-on: armhf
+  - build-on: [amd64]
+  - build-on: [arm64]
+  - build-on: [armhf]
 
 apps:
   radarr:
