@@ -31,6 +31,10 @@ grade: stable
 confinement: strict
 base: core20
 adopt-info: radarr
+architectures:
+  - amd64
+  - arm64
+  - armhf
 
 apps:
   radarr:
@@ -46,19 +50,34 @@ apps:
 parts:
   radarr:
     plugin: nil
-    source: 'http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=x64'
-    source-type: tar
-    override-build: |
-      snapcraftctl build
+    source: .
+    override-pull: |
+      # Architecture
+      case "$SNAPCRAFT_TARGET_ARCH" in
+        amd64) SRC_ARCH="x64" ;;
+        arm64) SRC_ARCH="arm64" ;;
+        armhf) SRC_ARCH="arm" ;;
+      esac
 
-      INST_DIR="$SNAPCRAFT_PART_INSTALL/Radarr"
-      mkdir -p "$INST_DIR"
-      cp -a * "$INST_DIR"
+      # Pull
+      cd "$SNAPCRAFT_PART_SRC"
+      rm -rf *
+      wget "http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=$SRC_ARCH"
+      tar xvf "updatefile?os=linux&runtime=netcore&arch=${SRC_ARCH}"
+
+      snapcraftctl pull
+    override-build: |
+      # Architecture
+      case "$SNAPCRAFT_TARGET_ARCH" in
+        amd64) SRC_ARCH="x64" ;;
+        arm64) SRC_ARCH="arm64" ;;
+        armhf) SRC_ARCH="arm" ;;
+      esac
 
       # Get Last Source Tag version and Check Snap (with same Source) version
-      src_version=$(curl -sL "http://radarr.servarr.com/v1/update/master/changes?os=linux&runtime=netcore&arch=x64" | sed -nre "s/^[^0-9]*([0-9\.]*).*/\1/p")
+      src_version=$(curl -sL "http://radarr.servarr.com/v1/update/master/changes?os=linux&runtime=netcore&arch=$SRC_ARCH" | sed -nre "s/^[^0-9]*([0-9\.]*).*/\1/p")
       echo "Source last tag: ${src_version}"
-      snap_last_version=$(curl -sL --unix-socket /run/snapd.socket http://localhost/v2/find\?q\=radarr-tak | sed -nre "s/^.*\"version\"\:\"([^\"]*)\".*/\1/p");
+      snap_last_version=$(curl -sL -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/qbittorrent-tak?architecture=${SNAPCRAFT_TARGET_ARCH}&fields=version" | sed -nre "s/^.*\"stable\"\,\"track\"\:\"latest\"\}\,\"version\"\:\"([^\"]*)\".*/\1/p");
       echo "Snap last version: ${snap_last_version}"
       snap_build_with_same_version=$(echo $snap_last_version | sed -nre "s/^($src_version.*).*/\1/p");
       # Same version ?
@@ -82,6 +101,20 @@ parts:
       fi
 
       snapcraftctl set-version $new_snap_version
+
+      # Pull
+      INST_DIR="$SNAPCRAFT_PART_INSTALL/Radarr"
+      mkdir -p "$INST_DIR"
+      cp -a Radarr/* $INST_DIR
+
+      # Build
+      snapcraftctl build
+    build-packages:
+      - curl
+      - wget
+    override-prime: |
+      snapcraftctl prime
+      chmod +rx $SNAPCRAFT_PRIME/bin/run-radarr.sh
     prime:
       - Radarr
 
@@ -95,7 +128,6 @@ parts:
     stage-packages:
       - liblttng-ust0
       - sqlite3
-      - wget
       - libicu66
     stage:
       - usr/bin/sqlite*
