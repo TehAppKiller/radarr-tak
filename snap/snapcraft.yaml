@@ -35,6 +35,9 @@ architectures:
   - build-on: [amd64]
   - build-on: [arm64]
   - build-on: [armhf]
+environment:
+ # Ubuntu 20.04 for armhf, ppc64el, riscv64, and s390x
+ CRYPTOGRAPHY_OPENSSL_NO_LEGACY: "1"
 
 apps:
   radarr:
