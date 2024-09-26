@@ -30,6 +30,15 @@ sudo snap connect radarr-tak:removable-media
 sudo snap connect radarr-tak:mount-observe
 ```
 
+## FAQ
+### How to access /home folder ?
+`removable-media` interface allows direct access to /media and /mnt folders\
+Easiest way to access your /home folder is by adding a symlink to your /media folder:
+```
+sudo ln -s /home/<username> /media/home
+```
+You can now access your /home folder in the app through `/media/home`.
+
 ## Building
 The snap requires Core20 for .NET Radarr source dependencies.
 ### Build from GitHub (Cannonical Launchpad automatized building)
