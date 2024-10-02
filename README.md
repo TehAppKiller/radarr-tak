@@ -1,4 +1,5 @@
 # radarr-tak
+[![radarr-tak](https://snapcraft.io/radarr-tak/badge.svg)](https://snapcraft.io/radarr-tak)
 
 ## Snap Description
 Canonical Snap for Radarr Release 5+\
