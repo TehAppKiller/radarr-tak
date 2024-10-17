@@ -1,54 +1,50 @@
-name: radarr-tak
-summary: UnOfficial release of Radarr v5
+name: readarr-tak
+summary: UnOfficial release of Readarr
 description: |
-  **Radarr is a movie collection manager for Usenet and BitTorrent users.**
-  It can monitor multiple RSS feeds for new movies and will interface
-  with clients and indexers to grab, sort, and rename them.
-  It can also be configured to automatically upgrade the quality
-  of existing files in the library when a better quality format becomes
-  available. Note that only one type of a given movie is supported.
-  If you want both an 4k version and 1080p version of a given movie
-  you will need multiple instances.
+  **Readarr is an ebook and audiobook collection manager for Usenet and BitTorrent users.**
+  It can monitor multiple RSS feeds for new books from your favorite authors 
+  and will grab, sort, and rename them. Note that only one type 
+  of a given book is supported. If you want both an audiobook and ebook 
+  of a given book you will need multiple instances.
+  
+  * The web interface is accessible by default at http://localhost:8787
+  * See https://readarr.com for more details.
 
-  * The web interface is accessible by default at http://localhost:7878
-  * See https://radarr.video for more details.
 
-  **Radarr Release 5+**
-  * Core20 is still required for Radarr dependencies
+  **Readarr is currently in beta testing**
+  * Core20 is still required for dependencies
   * Service is restarted on any condition.
 
   **Post install commands required to access media folders and see resources :**
 
-  sudo snap connect radarr-tak:removable-media
+  sudo snap connect readarr-tak:removable-media
 
-  sudo snap connect radarr-tak:mount-observe
-website: 'https://radarr.video'
-source-code: 'https://github.com/TehAppKiller/radarr-tak'
-issues: 'https://github.com/TehAppKiller/radarr-tak/issues'
+  sudo snap connect readarr-tak:mount-observe
 license: MIT
-icon: icon.png
+icon: icon.svg
 grade: stable
 confinement: strict
 base: core20
-adopt-info: radarr
+adopt-info: readarr
 architectures:
   - build-on: [amd64]
   - build-on: [arm64]
-#  - build-on: [armhf] # Fail OpenSSL even with environment variable set
+  - build-on: [armhf]
 
 apps:
-  radarr:
-    command: bin/run-radarr.sh
+  readarr:
+    command: bin/run-readarr.sh
     daemon: simple
     restart-condition: always
     plugs:
       - mount-observe
       - network
       - network-bind
+      - home
       - removable-media
 
 parts:
-  radarr:
+  readarr:
     plugin: nil
     source: .
     override-pull: |
@@ -60,10 +56,9 @@ parts:
       esac
 
       # Pull
-      cd "$SNAPCRAFT_PART_SRC"
-      rm -rf *
-      wget "http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=$SRC_ARCH"
-      tar xvf "updatefile?os=linux&runtime=netcore&arch=${SRC_ARCH}"
+      rm -rf $SNAPCRAFT_PART_SRC/{,.[!.],..?}*
+      wget "http://readarr.servarr.com/v1/update/develop/updatefile?os=linux&runtime=netcore&arch=$SRC_ARCH" -O srcfile
+      tar xvf srcfile
 
       snapcraftctl pull
     override-build: |
@@ -75,9 +70,9 @@ parts:
       esac
 
       # Get Last Source Tag version and Check Snap (with same Source) version
-      src_version=$(curl -sL "http://radarr.servarr.com/v1/update/master/changes?os=linux&runtime=netcore&arch=$SRC_ARCH" | sed -nre "s/^[^0-9]*([0-9\.]*).*/\1/p")
+      src_version=$(curl -sL "http://readarr.servarr.com/v1/update/develop/changes?os=linux&runtime=netcore&arch=$SRC_ARCH" | sed -nre "s/^[^0-9]*([0-9\.]*).*/\1/p")
       echo "Source last tag: ${src_version}"
-      snap_last_version=$(curl -sL -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/radarr-tak?architecture=${SNAPCRAFT_TARGET_ARCH}&fields=version" | sed -nre "s/^.*\"stable\"\,\"track\"\:\"latest\"\}\,\"version\"\:\"([^\"]*)\".*/\1/p");
+      snap_last_version=$(curl -sL -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/readarr-tak?architecture=${SNAPCRAFT_TARGET_ARCH}&fields=version" | sed -nre "s/^.*\"stable\"\,\"track\"\:\"latest\"\}\,\"version\"\:\"([^\"]*)\".*/\1/p");
       echo "Snap last version: ${snap_last_version}"
       snap_build_with_same_version=$(echo $snap_last_version | sed -nre "s/^($src_version.*).*/\1/p");
       # Same version ?
@@ -102,25 +97,25 @@ parts:
 
       snapcraftctl set-version $new_snap_version
 
-      # Pull
-      INST_DIR="$SNAPCRAFT_PART_INSTALL/Radarr"
-      mkdir -p "$INST_DIR"
-      cp -a Radarr/* $INST_DIR
-
       # Build
+      INST_DIR="$SNAPCRAFT_PART_INSTALL/Readarr"
+      mkdir -p "$INST_DIR"
+      cp -a Readarr/* $INST_DIR
+
       snapcraftctl build
     build-packages:
       - curl
       - wget
-    override-prime: |
-      snapcraftctl prime
-      chmod +rx $SNAPCRAFT_PRIME/bin/run-radarr.sh
+      - libssl-dev
     prime:
-      - Radarr
+      - Readarr
 
   local:
     plugin: dump
     source: snap/local
+    override-prime: |
+      snapcraftctl prime
+      chmod +rx $SNAPCRAFT_PRIME/bin/run-readarr.sh
 
   deps:
     plugin: nil
