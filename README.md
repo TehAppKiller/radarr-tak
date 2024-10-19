@@ -6,6 +6,7 @@ Canonical Snap for Radarr Release 5+\
 https://snapcraft.io/radarr-tak
 
 ## Radarr Description
+<img src="/icon.svg" width="100">
 Radarr is a movie collection manager for Usenet and BitTorrent users.\
 It can monitor multiple RSS feeds for new movies and will interface
 with clients and indexers to grab, sort, and rename them.
@@ -22,7 +23,7 @@ See https://radarr.video for more details.
 The web interface is accessible by default at http://localhost:7878
 
 Radarr Release 5+\
-Core20 is still required for Radarr dependencies\
+Core20 is still required for dependencies\
 Service is restarted on any condition.
 
 Post install commands required to access media folders and see resources :
