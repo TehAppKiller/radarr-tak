@@ -22,6 +22,20 @@ description: |
   sudo snap connect radarr-tak:removable-media
 
   sudo snap connect radarr-tak:mount-observe
+  
+  **Post install commands required to access home folder :**
+  
+  sudo snap connect radarr-tak:home
+  
+  **!!! Files can only be written in a directory owned by 'root' !!!**
+  
+  This is due to current behavior and restrictions of snaps running as daemon by Canonical.\
+  Check documentation on GitHub: https://github.com/TehAppKiller/radarr-tak
+website: https://radarr.video
+source-code: https://github.com/TehAppKiller/radarr-tak
+issues: https://github.com/TehAppKiller/radarr-tak/issues
+contact: tehappkiller@proton.me
+donation: https://whydonate.com/en/fundraising/help-teh-devz
 website: 'https://radarr.video'
 source-code: 'https://github.com/TehAppKiller/radarr-tak'
 issues: 'https://github.com/TehAppKiller/radarr-tak/issues'
@@ -45,8 +59,12 @@ apps:
       - mount-observe
       - network
       - network-bind
-      - home
       - removable-media
+      - home
+      
+plugs:
+  home:
+    read: all
 
 parts:
   radarr:
