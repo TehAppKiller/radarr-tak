@@ -92,7 +92,9 @@ parts:
       # Pull
       cd "$CRAFT_PART_SRC"
       rm -rf *
-      wget "http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=$SRC_ARCH" -O srcfile
+      download_url=$(curl -sL https://api.github.com/repos/Radarr/Radarr/releases/latest | grep "linux-core-$SRC_ARCH\." | sed -nre "s/^.*\"browser_download_url\": \"([^\"]*)\".*/\1/p")
+      wget "${download_url}" -O srcfile
+      #wget "http://radarr.servarr.com/v1/update/master/updatefile?os=linux&runtime=netcore&arch=$SRC_ARCH" -O srcfile
       tar xvf srcfile
 
       craftctl default
@@ -105,7 +107,8 @@ parts:
       esac
 
       # Get Last Source Tag version and Check Snap (with same Source) version
-      src_version=$(curl -sL "http://radarr.servarr.com/v1/update/master/changes?os=linux&runtime=netcore&arch=$SRC_ARCH" | sed -nre "s/^[^0-9]*([0-9\.]*).*/\1/p")
+      src_version=$(curl -sL https://api.github.com/repos/Radarr/Radarr/releases/latest | grep "linux-core-$SRC_ARCH\." | sed -nre "s/^.*\/download\/v([^\/]*)\/.*/\1/p")
+      #src_version=$(curl -sL "http://radarr.servarr.com/v1/update/master/changes?os=linux&runtime=netcore&arch=$SRC_ARCH" | sed -nre "s/^[^0-9]*([0-9\.]*).*/\1/p") # not always updated with release
       echo "Source last tag: ${src_version}"
       snap_last_version=$(curl -sL -H "Snap-Device-Series: 16" "https://api.snapcraft.io/v2/snaps/info/radarr-tak?architecture=${CRAFT_ARCH_BUILD_FOR}&fields=version" | sed -nre "s/^.*\"stable\"\,\"track\"\:\"latest\"\}\,\"version\"\:\"([^\"]*)\".*/\1/p");
       echo "Snap last version: ${snap_last_version}"
