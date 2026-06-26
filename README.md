@@ -4,7 +4,7 @@
 ![snap size](https://badgen.net/snapcraft/size/radarr-tak/amd64/stable)
 
 ## Snap Description
-Canonical Snap for Radarr Release 5+\
+Canonical Snap for Radarr\
 https://snapcraft.io/radarr-tak
 
 ## Radarr Description
@@ -24,7 +24,7 @@ See https://radarr.video for more details.
 
 The web interface is accessible by default at http://localhost:7878
 
-Radarr Release 5+\
+Radarr Release\
 Service is restarted on any condition.
 
 Post install commands required to access media folders and see resources :
@@ -40,9 +40,10 @@ This is due to current behavior and restrictions of snaps by Canonical.\
 Check common doc in FAQ if you want to setup data in /home directory.
 
 ## FAQ
-See my common doc about [FAQ](https://github.com/TehAppKiller/Snapcraft-common-doc/tree/main#FAQ).
+See common doc about [FAQ](https://github.com/TehAppKiller/Snapcraft-common-doc/tree/main#FAQ).
 
 ## Building
-See my common doc about [building a snap](https://github.com/TehAppKiller/Snapcraft-common-doc/tree/main#Building).
+See common doc about [building a snap](https://github.com/TehAppKiller/Snapcraft-common-doc/tree/main#Building).
+
 ## Versionning
-See my common doc about [versionning](https://github.com/TehAppKiller/Snapcraft-common-doc/tree/main#Versionning).
+See common doc about [versionning](https://github.com/TehAppKiller/Snapcraft-common-doc/tree/main#Versionning).

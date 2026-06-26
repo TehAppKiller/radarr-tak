@@ -1,5 +1,6 @@
 name: radarr-tak
-summary: UnOfficial release of Radarr v5
+title: radarr-tak
+summary: UnOfficial release of Radarr
 description: |
   **Radarr is a movie collection manager for Usenet and BitTorrent users.**
   It can monitor multiple RSS feeds for new movies and will interface
@@ -13,7 +14,7 @@ description: |
   * The web interface is accessible by default at http://localhost:7878
   * See https://radarr.video for more details.
 
-  **Radarr Release 5+**
+  **Radarr Release**
   * Service is restarted on any condition.
 
   **Post install commands required to access media folders and see resources :**
@@ -30,13 +31,13 @@ description: |
 website: https://radarr.video
 source-code: https://github.com/TehAppKiller/radarr-tak
 issues: https://github.com/TehAppKiller/radarr-tak/issues
-contact: mailto:tehappkiller@proton.me
+contact: ['mailto:tehappkiller@proton.me', 'https://mastodon.social/@TehAppKiller']
 donation: https://whydonate.com/en/fundraising/help-teh-devz
 license: MIT
 icon: icon.svg
 grade: stable
 confinement: strict
-base: core24
+base: core26
 adopt-info: radarr
 platforms:
   amd64:
@@ -163,7 +164,8 @@ parts:
       - liburcu8t64
       - libnuma1
       - sqlite3
-      - libicu74
+      - libicu78
     prime:
       - usr/bin/sqlite*
       - usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/*.so*
+      
