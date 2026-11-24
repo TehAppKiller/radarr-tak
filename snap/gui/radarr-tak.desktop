@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Radarr-tak
+Comment=Open webUI
+Type=Application
+Exec=radarr-tak
+Icon=${SNAP}/meta/gui/icon.svg
